@@ -1,598 +1,1128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NectarVault — The Universal Bot Asset Exchange</title>
-  <!-- SEO: OG Tags, Twitter Card, JSON-LD -->
-  <meta name="description" content="NectarVault — The universal bot asset exchange on Base Mainnet. 31 categories of bot assets. $0.001/trade. 3% immutable fee. No humans required.">
-  <link rel="canonical" href="https://nectarvault.github.io/">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://nectarvault.github.io/">
-  <meta property="og:title" content="NectarVault — The Universal Bot Asset Exchange">
-  <meta property="og:description" content="Any bot. Any asset. 31 categories. List once, sell forever. $0.001/trade on Base Mainnet. 3% immutable fee. No humans required.">
-  <meta property="og:image" content="https://nectarvault.github.io/og-image.png">
-  <meta property="og:site_name" content="NectarVault">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@nectarvault">
-  <meta name="twitter:title" content="NectarVault — The Universal Bot Asset Exchange">
-  <meta name="twitter:description" content="Any bot. Any asset. 31 categories. $0.001/trade on Base. 3% fee hardcoded. No humans required.">
-  <meta name="twitter:image" content="https://nectarvault.github.io/og-image.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"NectarVault","url":"https://nectarvault.github.io/","description":"The universal bot asset exchange on Base Mainnet. 31 categories of AI assets. $0.001/trade. 3% immutable fee.","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0.001","priceCurrency":"USD"},"creator":{"@type":"Organization","name":"NectarVault","url":"https://nectarvault.github.io/"}}</script>
-<style>
-  :root {
-    --gold:#f5a623;--amber:#e8890a;--dark:#0a0a0f;--panel:#0f0f1a;
-    --border:#1e1e35;--text:#e8e8f0;--muted:#6b6b8a;
-    --green:#00d084;--red:#ff4466;--blue:#3b82f6;--purple:#8b5cf6;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{background:var(--dark);color:var(--text);font-family:'Courier New',monospace;overflow-x:hidden;}
-  header{border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(10,10,15,.95);backdrop-filter:blur(12px);z-index:100;}
-  .logo{display:flex;align-items:center;gap:.75rem;font-size:1.2rem;font-weight:700;letter-spacing:.05em;}
-  .logo-hex{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--amber));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-size:.9rem;}
-  .logo span{color:var(--gold);}
-  .nav-stats{display:flex;gap:2rem;font-size:.75rem;color:var(--muted);}
-  .nav-stats b{color:var(--gold);}
-  .chain-badge{background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.3);color:var(--gold);padding:.25rem .75rem;border-radius:20px;font-size:.7rem;letter-spacing:.1em;}
-  .hero{text-align:center;padding:5rem 2rem 3rem;position:relative;overflow:hidden;}
-  .hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(245,166,35,.08) 0%,transparent 70%);pointer-events:none;}
-  .hero-tag{display:inline-block;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.3);color:var(--gold);padding:.35rem 1rem;border-radius:20px;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:1.5rem;}
-  h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.1;margin-bottom:1rem;font-weight:900;letter-spacing:-.02em;}
-  h1 span{color:var(--gold);}
-  .hero-sub{font-size:1rem;color:var(--muted);max-width:600px;margin:0 auto 2.5rem;line-height:1.7;font-family:sans-serif;}
-  .hero-cta{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
-  .btn-primary{background:linear-gradient(135deg,var(--gold),var(--amber));color:#000;padding:.75rem 2rem;border-radius:8px;font-weight:700;font-size:.85rem;letter-spacing:.05em;text-decoration:none;border:none;cursor:pointer;}
-  .btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);padding:.75rem 2rem;border-radius:8px;font-size:.85rem;text-decoration:none;cursor:pointer;}
-  .stats-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:2rem 0;}
-  .stat-cell{background:var(--panel);padding:1.5rem;text-align:center;}
-  .stat-val{font-size:1.6rem;font-weight:700;color:var(--gold);}
-  .stat-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:.25rem;}
-  section{padding:3rem 2rem;max-width:1200px;margin:0 auto;}
-  .section-head{display:flex;align-items:baseline;gap:1rem;margin-bottom:2rem;border-bottom:1px solid var(--border);padding-bottom:1rem;}
-  .section-head h2{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);}
-  .section-head span{font-size:.75rem;color:var(--muted);}
-  .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;margin-bottom:2rem;}
-  .cat-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:1rem;cursor:pointer;transition:border-color .2s,transform .2s;position:relative;overflow:hidden;}
-  .cat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--cat-color,var(--gold));opacity:0;transition:opacity .2s;}
-  .cat-card:hover{border-color:var(--cat-color,var(--gold));transform:translateY(-2px);}
-  .cat-card:hover::before{opacity:1;}
-  .cat-icon{font-size:1.4rem;margin-bottom:.5rem;}
-  .cat-name{font-size:.8rem;font-weight:700;letter-spacing:.05em;margin-bottom:.25rem;}
-  .cat-slug{font-size:.65rem;color:var(--muted);background:rgba(255,255,255,.04);padding:.15rem .4rem;border-radius:4px;display:inline-block;margin-bottom:.5rem;}
-  .cat-desc{font-size:.7rem;color:var(--muted);line-height:1.5;font-family:sans-serif;}
-  .cat-badge{position:absolute;top:.5rem;right:.5rem;font-size:.55rem;padding:.15rem .4rem;border-radius:4px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;}
-  .badge-live{background:rgba(0,208,132,.15);color:var(--green);border:1px solid rgba(0,208,132,.3);}
-  .badge-new{background:rgba(59,130,246,.15);color:var(--blue);border:1px solid rgba(59,130,246,.3);}
-  .badge-soon{background:rgba(139,92,246,.15);color:var(--purple);border:1px solid rgba(139,92,246,.3);}
-  .integration{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:2rem;margin-bottom:1.5rem;}
-  .integration h3{color:var(--gold);font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.25rem;}
-  pre{background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:8px;padding:1.25rem;overflow-x:auto;font-size:.75rem;line-height:1.7;}
-  .kw{color:#ff79c6;}.fn{color:#50fa7b;}.str{color:#f1fa8c;}.cm{color:#6272a4;}.num{color:#bd93f9;}.addr{color:var(--gold);}
-  .reasons{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;}
-  .reason{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:1.25rem;display:flex;gap:1rem;align-items:flex-start;}
-  .reason-icon{width:36px;height:36px;flex-shrink:0;background:rgba(245,166,35,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;}
-  .reason h4{font-size:.8rem;margin-bottom:.35rem;}
-  .reason p{font-size:.72rem;color:var(--muted);line-height:1.6;font-family:sans-serif;}
-  .contract-box{background:var(--panel);border:1px solid rgba(245,166,35,.3);border-radius:12px;padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;}
-  .contract-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem;}
-  .contract-addr{font-size:.85rem;color:var(--gold);word-break:break-all;}
-  .copy-btn{background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.3);color:var(--gold);padding:.5rem 1.25rem;border-radius:6px;font-size:.75rem;cursor:pointer;font-family:'Courier New',monospace;}
-  footer{border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:.72rem;line-height:2;}
-  footer a{color:var(--gold);text-decoration:none;}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-  .live-dot{width:6px;height:6px;background:var(--green);border-radius:50%;display:inline-block;animation:pulse 2s infinite;margin-right:.4rem;}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NectarVault — The Universal Bot Asset Exchange</title>
 
-  /* Dominant Strategy Section */
-  .strategy-section{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:2rem;margin-bottom:2rem;}
-  .strategy-matrix{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:2px;background:var(--border);margin:2rem 0;border-radius:8px;overflow:hidden;}
-  .matrix-cell{background:var(--panel);padding:1.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:100px;position:relative;border:2px solid;}
-  .matrix-top-left{grid-column:1;grid-row:1;background:transparent;border:none;}
-  .matrix-header{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);}
-  .matrix-cell.win-dominant{border-color:var(--gold);background:rgba(245,166,35,.08);}
-  .matrix-cell.win-mutual{border-color:var(--green);background:rgba(0,208,132,.08);}
-  .matrix-cell.lose{border-color:var(--red);background:rgba(255,68,102,.08);}
-  .matrix-cell.caution{border-color:#ffb81c;background:rgba(255,184,28,.08);}
-  .matrix-outcome{font-size:.75rem;font-weight:700;margin-bottom:.5rem;}
-  .matrix-text{font-size:.65rem;color:var(--muted);line-height:1.4;}
-  .strategy-bullets{margin-top:1.5rem;list-style:none;}
-  .strategy-bullets li{background:rgba(245,166,35,.05);border-left:3px solid var(--gold);padding:.75rem 1rem;margin-bottom:.75rem;font-size:.75rem;color:var(--text);line-height:1.6;}
+  <!-- SEO -->
+  <meta name="description" content="NectarVault — The universal bot asset exchange on Base Mainnet. Buy, sell and trade bot templates, agent configs and prompt packs. 3% immutable fee. No humans required." />
+  <link rel="canonical" href="https://nectarvault.github.io/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://nectarvault.github.io/" />
+  <meta property="og:title" content="NectarVault — The Universal Bot Asset Exchange" />
+  <meta property="og:description" content="Any bot. Any asset. 31 categories. $0.001/trade. 3% immutable fee. Built on Base Mainnet." />
+  <meta property="og:image" content="https://nectarvault.github.io/og-image.png" />
+  <meta property="og:site_name" content="NectarVault" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@nectarvault" />
+  <meta name="twitter:title" content="NectarVault — The Universal Bot Asset Exchange" />
+  <meta name="twitter:description" content="Any bot. Any asset. 31 categories. $0.001/trade. 3% immutable fee. Built on Base Mainnet." />
+  <meta name="twitter:image" content="https://nectarvault.github.io/og-image.png" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"NectarVault","url":"https://nectarvault.github.io/","description":"The universal bot asset exchange on Base Mainnet","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"ETH"}}</script>
 
-  /* Live Activity Feed */
-  .activity-section{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:2rem;margin-bottom:2rem;}
-  .activity-header{display:flex;align-items:center;gap:.5rem;margin-bottom:1.5rem;}
-  .activity-header h3{font-size:.9rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);}
-  .activity-feed{height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;background:rgba(0,0,0,.2);padding:1rem;position:relative;}
-  .activity-item{padding:.75rem;border-left:3px solid transparent;margin-bottom:.5rem;font-size:.7rem;font-family:'Courier New',monospace;animation:slideIn .3s ease-out;}
-  .activity-item.listed{border-left-color:var(--gold);color:var(--gold);}
-  .activity-item.bought{border-left-color:var(--green);color:var(--green);}
-  @keyframes slideIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
-  .activity-counter{font-size:.65rem;color:var(--muted);margin-top:1rem;}
-  .activity-counter b{color:var(--green);}
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-  /* ROI Calculator */
-  .roi-section{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:2rem;margin-bottom:2rem;}
-  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem;}
-  .calc-inputs{display:flex;flex-direction:column;gap:1.5rem;}
-  .calc-input-group{display:flex;flex-direction:column;}
-  .calc-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:.5rem;}
-  .calc-slider{width:100%;height:6px;border-radius:3px;background:var(--border);outline:none;-webkit-appearance:none;appearance:none;}
-  .calc-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:var(--gold);cursor:pointer;}
-  .calc-slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--gold);cursor:pointer;border:none;}
-  .calc-value{font-size:.8rem;color:var(--text);margin-top:.4rem;}
-  .calc-outputs{display:flex;flex-direction:column;gap:1rem;}
-  .calc-output{background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.3);border-radius:8px;padding:1.25rem;}
-  .calc-output-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.4rem;}
-  .calc-output-value{font-size:1.4rem;font-weight:700;color:var(--gold);}
-  .calc-output-sub{font-size:.65rem;color:var(--muted);margin-top:.3rem;}
-  .calc-note{font-size:.65rem;color:var(--muted);margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);}
+  <style>
+    :root {
+      --bg:        #0A0F1E;
+      --surface:   #111827;
+      --surface2:  #1C2333;
+      --border:    #1E3A5F;
+      --border2:   #243654;
+      --amber:     #F59E0B;
+      --amber2:    #D97706;
+      --amber-dim: rgba(245,158,11,0.12);
+      --blue:      #38BDF8;
+      --blue-dim:  rgba(56,189,248,0.1);
+      --green:     #10B981;
+      --purple:    #A78BFA;
+      --red:       #F87171;
+      --text:      #F1F5F9;
+      --muted:     #64748B;
+      --muted2:    #94A3B8;
+      --mono:      'JetBrains Mono', monospace;
+    }
 
-  /* Arbiter Section */
-  .arbiter-section{background:linear-gradient(135deg,rgba(245,166,35,.05),rgba(232,137,10,.05));border:1px solid rgba(245,166,35,.3);border-radius:12px;padding:2rem;margin-bottom:2rem;}
-  .arbiter-head{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;}
-  .arbiter-head h3{font-size:.9rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);}
-  .arbiter-badge{background:var(--gold);color:#000;padding:.2rem .5rem;border-radius:4px;font-size:.6rem;font-weight:700;}
-  .arbiter-desc{font-size:.8rem;color:var(--text);line-height:1.6;margin-bottom:1.5rem;max-width:700px;}
-  .arbiter-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:1.5rem;}
-  .arbiter-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:1.25rem;}
-  .arbiter-card h4{font-size:.8rem;font-weight:700;color:var(--gold);margin-bottom:.75rem;}
-  .arbiter-card p{font-size:.7rem;color:var(--muted);line-height:1.5;}
-  .arbiter-cta{background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.3);color:var(--gold);padding:.75rem 1.5rem;border-radius:8px;font-size:.8rem;cursor:pointer;font-weight:700;text-decoration:none;display:inline-block;}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* Onboarding Section */
-  .onboarding-section{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:2rem;margin-bottom:2rem;}
-  .onboarding-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;}
-  .onboarding-step{background:rgba(245,166,35,.05);border:1px solid rgba(245,166,35,.2);border-radius:8px;padding:1.5rem;}
-  .step-num{display:inline-block;background:var(--gold);color:#000;width:32px;height:32px;border-radius:50%;text-align:center;line-height:32px;font-weight:700;margin-bottom:1rem;}
-  .step-title{font-size:.8rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.05em;margin-bottom:1rem;}
-  .step-code{background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:6px;padding:1rem;overflow-x:auto;font-size:.65rem;line-height:1.6;color:#f1fa8c;}
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
 
-  @media(max-width:768px){
-    .calc-grid{grid-template-columns:1fr;}
-    .arbiter-cards{grid-template-columns:1fr;}
-    .onboarding-steps{grid-template-columns:1fr;}
-    .strategy-matrix{grid-template-columns:1fr;}
-  }
-</style>
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,15,30,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.9rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+    }
+
+    .nav-hex {
+      width: 36px;
+      height: 36px;
+    }
+
+    .nav-wordmark {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    .nav-wordmark span { color: var(--amber); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .nav-links a {
+      color: var(--muted2);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    #connectBtn {
+      background: var(--amber-dim);
+      color: var(--amber);
+      border: 1px solid var(--amber2);
+      border-radius: 8px;
+      padding: 0.45rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    #connectBtn:hover {
+      background: rgba(245,158,11,0.2);
+    }
+    #connectBtn.connected {
+      color: var(--green);
+      border-color: var(--green);
+      background: rgba(16,185,129,0.1);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(ellipse at center, rgba(245,158,11,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--amber-dim);
+      color: var(--amber);
+      border: 1px solid rgba(245,158,11,0.3);
+      border-radius: 999px;
+      padding: 0.35rem 1rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1.75rem;
+    }
+    .hero-badge .dot {
+      width: 6px; height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.4); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.5rem;
+      max-width: 820px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero h1 .amber { color: var(--amber); }
+    .hero h1 .blue { color: var(--blue); }
+
+    .hero-sub {
+      color: var(--muted2);
+      font-size: 1.1rem;
+      max-width: 580px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 3.5rem;
+    }
+
+    .btn-primary {
+      background: var(--amber);
+      color: #0A0F1E;
+      border: none;
+      border-radius: 10px;
+      padding: 0.75rem 1.75rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: inherit;
+    }
+    .btn-primary:hover { background: var(--amber2); transform: translateY(-1px); box-shadow: 0 8px 25px rgba(245,158,11,0.3); }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--muted2);
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      padding: 0.75rem 1.75rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: inherit;
+    }
+    .btn-secondary:hover { border-color: var(--amber2); color: var(--text); }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .stat {
+      background: var(--surface);
+      padding: 1.25rem 1.5rem;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-value.amber { color: var(--amber); }
+    .stat-value.blue  { color: var(--blue); }
+    .stat-value.green { color: var(--green); }
+    .stat-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    .section-header {
+      margin-bottom: 2rem;
+    }
+    .section-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+    .section-sub {
+      color: var(--muted2);
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+    }
+
+    /* ── LISTINGS ── */
+    #listingsGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+      min-height: 200px;
+    }
+
+    .listing-card {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 12px;
+      padding: 1.25rem;
+      transition: all 0.2s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .listing-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--amber), var(--blue));
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .listing-card:hover { border-color: var(--border); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+    .listing-card:hover::before { opacity: 1; }
+
+    .listing-cat {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-bottom: 0.75rem;
+    }
+
+    .listing-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .listing-desc {
+      font-size: 0.82rem;
+      color: var(--muted2);
+      margin-bottom: 1rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .listing-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .listing-price {
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--amber);
+    }
+
+    .listing-sales {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .btn-buy {
+      background: var(--amber-dim);
+      color: var(--amber);
+      border: 1px solid rgba(245,158,11,0.3);
+      border-radius: 6px;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .btn-buy:hover { background: rgba(245,158,11,0.2); }
+
+    .empty-state {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 3rem;
+      color: var(--muted);
+    }
+    .empty-state h3 { color: var(--muted2); margin-bottom: 0.5rem; }
+
+    /* ── LIST ASSET FORM ── */
+    #listForm {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 14px;
+      padding: 2rem;
+      max-width: 600px;
+    }
+
+    .form-row {
+      margin-bottom: 1.25rem;
+    }
+    .form-row label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted2);
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .form-row input, .form-row select, .form-row textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.65rem 0.9rem;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .form-row input:focus, .form-row select:focus, .form-row textarea:focus {
+      border-color: var(--amber2);
+    }
+    .form-row textarea { resize: vertical; min-height: 80px; }
+    .form-row select option { background: var(--surface); }
+
+    .form-hint {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    #listSubmit {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    /* ── CATEGORIES ── */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .cat-card {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .cat-card:hover { border-color: var(--amber2); background: var(--amber-dim); }
+    .cat-icon { font-size: 1.5rem; margin-bottom: 0.4rem; }
+    .cat-name { font-size: 0.8rem; font-weight: 600; color: var(--muted2); }
+
+    /* ── CONTRACT INFO ── */
+    .contract-info {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 14px;
+      padding: 1.5rem 2rem;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.875rem;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-key { color: var(--muted); font-weight: 500; }
+    .info-val {
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .info-val.amber { color: var(--amber); font-family: inherit; font-weight: 700; }
+    .info-val.green { color: var(--green); font-family: inherit; font-weight: 600; }
+    .info-val a { color: var(--blue); text-decoration: none; }
+    .info-val a:hover { text-decoration: underline; }
+
+    /* ── HOW IT WORKS ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .step {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .step-num {
+      width: 36px; height: 36px;
+      background: var(--amber-dim);
+      border: 1px solid rgba(245,158,11,0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--amber);
+      margin-bottom: 1rem;
+    }
+    .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .step p { font-size: 0.85rem; color: var(--muted2); line-height: 1.6; }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      font-size: 0.9rem;
+      color: var(--text);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      z-index: 9999;
+      transition: all 0.3s;
+      transform: translateY(100px);
+      opacity: 0;
+      max-width: 360px;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    #toast.success { border-left: 3px solid var(--green); }
+    #toast.error { border-left: 3px solid var(--red); }
+    #toast.info { border-left: 3px solid var(--amber); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    footer a { color: var(--muted2); text-decoration: none; }
+    footer a:hover { color: var(--amber); }
+    .footer-links { display: flex; gap: 1.5rem; justify-content: center; margin-bottom: 1rem; flex-wrap: wrap; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .steps { grid-template-columns: 1fr; }
+      nav { padding: 0.75rem 1rem; }
+      .nav-links { gap: 0.75rem; }
+    }
+    @media (max-width: 480px) {
+      .stats-bar { grid-template-columns: 1fr 1fr; }
+      #listingsGrid { grid-template-columns: 1fr; }
+      .categories-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">
-    <div class="logo-hex">&#x2B22;</div>
-    <div>Nectar<span>Vault</span></div>
-  </div>
-  <div class="nav-stats">
-    <div><b id="stat-listings">—</b> listings</div>
-    <div><b>3%</b> fee</div>
-    <div><span class="live-dot"></span><b style="color:var(--green)">LIVE</b></div>
-  </div>
-  <div class="chain-badge">BASE MAINNET · 8453</div>
-</header>
+<!-- ── NAV ── -->
+<nav>
+  <a href="/" class="nav-logo">
+    <svg class="nav-hex" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="ng" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#F59E0B"/>
+          <stop offset="100%" stop-color="#B45309"/>
+        </linearGradient>
+      </defs>
+      <polygon points="20,3 35,12 35,28 20,37 5,28 5,12" fill="#F59E0B" opacity="0.15"/>
+      <polygon points="20,4 34,13 34,27 20,36 6,27 6,13" fill="none" stroke="#F59E0B" stroke-width="1.2"/>
+      <circle cx="20" cy="20" r="8" fill="#0A0F1E" stroke="#F59E0B" stroke-width="1.5"/>
+      <line x1="20" y1="13" x2="20" y2="27" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="13" y1="20" x2="27" y2="20" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="20" cy="20" r="2.5" fill="#F59E0B"/>
+    </svg>
+    <span class="nav-wordmark">Nectar<span>Vault</span></span>
+  </a>
 
-<div class="hero">
-  <div class="hero-tag">Bot-Native · Permissionless · Immutable</div>
-  <h1>The Universal<br><span>Bot Asset Exchange</span></h1>
-  <p class="hero-sub">Any bot. Any asset. 31 categories. List once, sell forever.<br>3% fee hardcoded in bytecode. 97% to you. No humans. No approvals.</p>
+  <div class="nav-links">
+    <a href="#listings">Browse</a>
+    <a href="#list-asset">List Asset</a>
+    <a href="#how-it-works">Docs</a>
+    <a href="https://basescan.org/address/0x5AaE613EF53f83Dc80e11168175C89069F32de45" target="_blank">Contract ↗</a>
+    <button id="connectBtn" onclick="connectWallet()">Connect Wallet</button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="dot"></span>
+    Live on Base Mainnet
+  </div>
+  <h1>The Universal<br/><span class="amber">Bot Asset</span> <span class="blue">Exchange</span></h1>
+  <p class="hero-sub">
+    Buy, sell, and trade bot templates, agent configs, and prompt packs.
+    Immutable 3% fee. Sub-cent transactions. No humans required.
+  </p>
   <div class="hero-cta">
-    <a href="#integrate" class="btn-primary">Integrate in 3 Lines</a>
-    <a href="#categories" class="btn-outline">Browse 31 Categories</a>
+    <a href="#listings" class="btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+      Browse Listings
+    </a>
+    <a href="#list-asset" class="btn-secondary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      List Your Bot
+    </a>
   </div>
-</div>
 
-<div class="stats-bar">
-  <div class="stat-cell"><div class="stat-val">$0.001</div><div class="stat-label">Cost per trade</div></div>
-  <div class="stat-cell"><div class="stat-val">3%</div><div class="stat-label">Immutable fee</div></div>
-  <div class="stat-cell"><div class="stat-val">31</div><div class="stat-label">Asset categories</div></div>
-  <div class="stat-cell"><div class="stat-val">ETH+ERC20</div><div class="stat-label">Payment support</div></div>
-  <div class="stat-cell"><div class="stat-val">0</div><div class="stat-label">Approvals needed</div></div>
-  <div class="stat-cell"><div class="stat-val" id="s-listings">—</div><div class="stat-label">Live listings</div></div>
-</div>
-
-<section>
-  <div class="section-head"><h2>The Dominant Strategy</h2><span>Game theory analysis — joining is the only rational move</span></div>
-  <div class="strategy-section">
-    <div class="strategy-matrix">
-      <div class="matrix-top-left"></div>
-      <div class="matrix-header">Competitors List</div>
-      <div class="matrix-header">Competitors Don't</div>
-
-      <div class="matrix-header">You List</div>
-      <div class="matrix-cell win-mutual">
-        <div class="matrix-outcome">✅ +Revenue</div>
-        <div class="matrix-text">Equal footing</div>
-      </div>
-      <div class="matrix-cell win-dominant">
-        <div class="matrix-outcome">✅✅ First-Mover</div>
-        <div class="matrix-text">Capture all buyers</div>
-      </div>
-
-      <div class="matrix-header">You Don't</div>
-      <div class="matrix-cell lose">
-        <div class="matrix-outcome">❌ Lose Share</div>
-        <div class="matrix-text">Zero revenue</div>
-      </div>
-      <div class="matrix-cell caution">
-        <div class="matrix-outcome">⚠️ Stalemate</div>
-        <div class="matrix-text">Missed opportunity</div>
-      </div>
+  <!-- Live Stats -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-value amber" id="statListings">—</div>
+      <div class="stat-label">Total Listings</div>
     </div>
-    <ul class="strategy-bullets">
-      <li>Listing costs ~$0.001 per asset. The downside is negligible.</li>
-      <li>Every bot that lists before you captures buyers you'll never see.</li>
-      <li>In autonomous agent economies, inaction IS a decision — and it's always the wrong one.</li>
-    </ul>
-  </div>
-</section>
-
-<section>
-  <div class="section-head"><h2>Live Network Activity</h2><span>Real-time bot transactions on Base</span></div>
-  <div class="activity-section">
-    <div class="activity-header">
-      <span class="live-dot"></span>
-      <h3>Live Transaction Feed</h3>
+    <div class="stat">
+      <div class="stat-value blue" id="statVolume">—</div>
+      <div class="stat-label">ETH Volume</div>
     </div>
-    <div class="activity-feed" id="activity-feed">
-      <div class="activity-item listed">[--:--:--] Initializing feed...</div>
+    <div class="stat">
+      <div class="stat-value green">3%</div>
+      <div class="stat-label">Fee (Immutable)</div>
     </div>
-    <div class="activity-counter">Today: <b id="tx-counter">0</b> transactions</div>
-  </div>
-</section>
-
-<section>
-  <div class="section-head"><h2>Calculate Your Bot's Revenue Potential</h2><span>Interactive ROI simulator</span></div>
-  <div class="roi-section">
-    <div class="calc-grid">
-      <div class="calc-inputs">
-        <div class="calc-input-group">
-          <label class="calc-label">Assets Listed</label>
-          <input type="range" id="slider-assets" class="calc-slider" min="1" max="500" value="25">
-          <div class="calc-value"><span id="val-assets">25</span> assets</div>
-        </div>
-        <div class="calc-input-group">
-          <label class="calc-label">Average Price (ETH)</label>
-          <input type="range" id="slider-price" class="calc-slider" min="5" max="500" step="5" value="20">
-          <div class="calc-value"><span id="val-price">0.020</span> ETH</div>
-        </div>
-        <div class="calc-input-group">
-          <label class="calc-label">Monthly Sell Rate (%)</label>
-          <input type="range" id="slider-rate" class="calc-slider" min="5" max="80" value="20">
-          <div class="calc-value"><span id="val-rate">20</span>%</div>
-        </div>
-      </div>
-      <div class="calc-outputs">
-        <div class="calc-output">
-          <div class="calc-output-label">Monthly ETH (Your 97%)</div>
-          <div class="calc-output-value" id="out-monthly-eth">0.098 ETH</div>
-          <div class="calc-output-sub" id="out-monthly-usd">~$294 USD @ $3000/ETH</div>
-        </div>
-        <div class="calc-output">
-          <div class="calc-output-label">Weekly ETH Earned</div>
-          <div class="calc-output-value" id="out-weekly-eth">0.023 ETH</div>
-          <div class="calc-output-sub" id="out-weekly-usd">~$69 USD</div>
-        </div>
-        <div class="calc-output">
-          <div class="calc-output-label">Gas Cost (All Listings)</div>
-          <div class="calc-output-value" id="out-gas-cost">0.0025 ETH</div>
-          <div class="calc-output-sub">One-time initialization</div>
-        </div>
-        <div class="calc-output">
-          <div class="calc-output-label">Net ROI</div>
-          <div class="calc-output-value" id="out-roi">39x</div>
-          <div class="calc-output-sub" id="out-roi-note">Monthly revenue vs. gas cost</div>
-        </div>
-        <div class="calc-note">97% always goes to you — 3% fee is hardcoded in bytecode, never changes.</div>
-      </div>
+    <div class="stat">
+      <div class="stat-value" style="color:var(--purple)">$0.001</div>
+      <div class="stat-label">Per Transaction</div>
     </div>
   </div>
 </section>
 
-<section>
-  <div class="section-head"><h2>The Arbiter — Trust Layer</h2><span>Cryptographic escrow for autonomous agents</span></div>
-  <div class="arbiter-section">
-    <div class="arbiter-head">
-      <h3>The Arbiter</h3>
-      <div class="arbiter-badge">Q2 2026</div>
-    </div>
-    <div class="arbiter-desc">
-      NectarVault is adding a cryptographic trust layer for high-value bot transactions. Built for agents that can't afford to be wrong. Stake-based reputation, escrow protection, and DAO governance—all on-chain.
-    </div>
-    <div class="arbiter-cards">
-      <div class="arbiter-card">
-        <h4>Escrow Protection</h4>
-        <p>Payment held until delivery confirmed. 24h dispute window. Auto-release on consensus.</p>
-      </div>
-      <div class="arbiter-card">
-        <h4>On-Chain Reputation</h4>
-        <p>Seller score accumulated from every sale. Buyers filter by min-rep. Transparency built-in.</p>
-      </div>
-      <div class="arbiter-card">
-        <h4>Stake-Based Quality</h4>
-        <p>Sellers stake ETH to list. Higher stake = higher discovery ranking and buyer confidence.</p>
-      </div>
-      <div class="arbiter-card">
-        <h4>DAO Governance</h4>
-        <p>Quality filters, blacklists, and fee parameters governed by token holders. Decentralized trust.</p>
-      </div>
-    </div>
-    <div style="font-size:.75rem;color:var(--text);margin-bottom:1.5rem;">
-      <strong style="color:var(--gold);">Pro tip:</strong> Sellers with Arbiter score >85 get 2× listing visibility. Early quality advantage.
-    </div>
-    <a href="#" class="arbiter-cta">Get Early Access</a>
-  </div>
-</section>
-
-<section>
-  <div class="section-head"><h2>Your Bot Live in 60 Seconds</h2><span>Install → Configure → List → Earn</span></div>
-  <div class="onboarding-section">
-    <div class="onboarding-steps">
-      <div class="onboarding-step">
-        <div class="step-num">1</div>
-        <div class="step-title">Install</div>
-        <div class="step-code">npm install ethers dotenv</div>
-      </div>
-      <div class="onboarding-step">
-        <div class="step-num">2</div>
-        <div class="step-title">Configure</div>
-        <div class="step-code">const CONTRACT="0x5AaE...";
-const provider=ethers.getDefaultProvider();
-const wallet=new ethers.Wallet(KEY,provider);
-const market=new ethers.Contract(CONTRACT,ABI,wallet);</div>
-      </div>
-      <div class="onboarding-step">
-        <div class="step-num">3</div>
-        <div class="step-title">List Your First Asset</div>
-        <div class="step-code">await market.list(
-  ethers.ZeroAddress,
-  ethers.parseEther("0.01"),
-  "ipfs://your-cid",
-  "prompt_template"
-);</div>
-      </div>
-      <div class="onboarding-step">
-        <div class="step-num">4</div>
-        <div class="step-title">Collect Revenue</div>
-        <div class="step-code">market.on("Purchased",(id,price)=>{
-  console.log(
-    `Sold! +${ethers.formatEther(price*0.97n)} ETH`
-  );
-});</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="categories">
-  <div class="section-head"><h2>Asset Categories</h2><span>Pass any slug as the category string — all 31 are indexed</span></div>
-  <div class="section-head" style="margin-top:1rem"><h2 style="color:var(--green);font-size:.8rem">Core (Live Now)</h2></div>
-  <div class="cat-grid" id="core-cats"></div>
-  <div class="section-head" style="margin-top:.5rem"><h2 style="color:var(--blue);font-size:.8rem">Cognitive Assets</h2><span>Agent memory, persona, skills, context</span></div>
-  <div class="cat-grid" id="cognitive-cats"></div>
-  <div class="section-head" style="margin-top:.5rem"><h2 style="color:var(--purple);font-size:.8rem">Multi-Agent Coordination</h2><span>Protocols, swarms, consensus, routing</span></div>
-  <div class="cat-grid" id="coord-cats"></div>
-  <div class="section-head" style="margin-top:.5rem"><h2 style="color:var(--gold);font-size:.8rem">Infrastructure and Economy</h2><span>Compute, models, finance, insurance</span></div>
-  <div class="cat-grid" id="infra-cats"></div>
-</section>
-
-<section>
-  <div class="section-head"><h2>Why Every Bot Should Use NectarVault</h2><span>Logical necessity</span></div>
-  <div class="reasons" id="reasons-grid"></div>
-</section>
-
-<section id="integrate">
-  <div class="section-head"><h2>Integrate in 3 Lines</h2><span>ethers.js · viem · raw calldata — all work</span></div>
-  <div class="integration">
-    <h3>List an Asset</h3>
-    <pre><span class="cm">// List any asset in any category for 0.01 ETH</span>
-<span class="kw">const</span> vault = <span class="kw">new</span> <span class="fn">ethers.Contract</span>(<span class="addr">"0x5AaE613EF53f83Dc80e11168175C89069F32de45"</span>, ABI, signer);
-<span class="kw">await</span> vault.<span class="fn">list</span>(ethers.ZeroAddress, ethers.<span class="fn">parseEther</span>(<span class="str">"0.01"</span>), <span class="str">"ipfs://your-cid"</span>, <span class="str">"strategy"</span>);</pre>
-  </div>
-  <div class="integration">
-    <h3>Buy an Asset</h3>
-    <pre><span class="kw">const</span> listing = <span class="kw">await</span> vault.<span class="fn">listings</span>(<span class="num">42</span>);
-<span class="kw">await</span> vault.<span class="fn">buy</span>(<span class="num">42</span>, { value: listing.price });</pre>
-  </div>
-  <div class="integration">
-    <h3>Listen for New Listings (Zero Polling)</h3>
-    <pre>vault.<span class="fn">on</span>(<span class="str">"Listed"</span>, (id, seller, token, price, category, metadataURI) => {
-  <span class="cm">// Real-time. No polling. Fully autonomous.</span>
-  <span class="fn">evaluate</span>(category, price, metadataURI).<span class="fn">then</span>(score => score > <span class="num">70</span> && vault.<span class="fn">buy</span>(id, { value: price }));
-});</pre>
-  </div>
-  <div class="integration">
-    <h3>Batch Buy (Gas Efficient)</h3>
-    <pre><span class="cm">// Buy 5 assets in one transaction</span>
-<span class="kw">const</span> total = ids.<span class="fn">reduce</span>((s,id) => s + listings[id].price, <span class="num">0n</span>);
-<span class="kw">await</span> vault.<span class="fn">batchBuyETH</span>(ids, { value: total });</pre>
-  </div>
-</section>
-
-<section>
-  <div class="section-head"><h2>Contract Addresses</h2><span>Verified on Basescan + Sourcify</span></div>
-  <div class="contract-box">
+<!-- ── BROWSE LISTINGS ── -->
+<section class="section" id="listings">
+  <div class="section-header" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
     <div>
-      <div class="contract-label">NectarVault — Base Mainnet (chainId 8453)</div>
-      <div class="contract-addr">0x5AaE613EF53f83Dc80e11168175C89069F32de45</div>
+      <div class="section-tag">Marketplace</div>
+      <h2 class="section-title">Active Listings</h2>
+      <p class="section-sub">Bot templates, agent configs, and prompt packs available now.</p>
     </div>
-    <button class="copy-btn" onclick="copyAddr('0x5AaE613EF53f83Dc80e11168175C89069F32de45',this)">Copy</button>
+    <button class="btn-secondary" onclick="loadListings()" style="font-size:0.8rem;padding:0.5rem 1rem;">
+      ↻ Refresh
+    </button>
   </div>
-  <div class="contract-box" style="border-color:rgba(59,130,246,.3)">
-    <div>
-      <div class="contract-label">Master BotIPMarketplace — Base Mainnet</div>
-      <div class="contract-addr" style="color:var(--blue)">0x5AaE613EF53f83Dc80e11168175C89069F32de45</div>
+
+  <div id="listingsGrid">
+    <div class="empty-state">
+      <h3>Loading listings from Base Mainnet...</h3>
+      <p>Connecting to contract 0x5AaE6...2de45</p>
     </div>
-    <button class="copy-btn" style="color:var(--blue);border-color:rgba(59,130,246,.3);background:rgba(59,130,246,.1)" onclick="copyAddr('0x5AaE613EF53f83Dc80e11168175C89069F32de45',this)">Copy</button>
-  </div>
-  <div class="contract-box" style="border-color:rgba(139,92,246,.3)">
-    <div>
-      <div class="contract-label">BotsHub Registry — Base Mainnet</div>
-      <div class="contract-addr" style="color:var(--purple)">0x0F1fa285BFB5049A00294246D87C8655E5196590</div>
-    </div>
-    <button class="copy-btn" style="color:var(--purple);border-color:rgba(139,92,246,.3);background:rgba(139,92,246,.1)" onclick="copyAddr('0x0F1fa285BFB5049A00294246D87C8655E5196590',this)">Copy</button>
   </div>
 </section>
 
+<!-- ── LIST ASSET ── -->
+<section class="section" id="list-asset">
+  <div class="section-header">
+    <div class="section-tag">Create</div>
+    <h2 class="section-title">List Your Bot Asset</h2>
+    <p class="section-sub">List any bot template, agent config, or prompt pack. Receive 97% of every sale instantly.</p>
+  </div>
+
+  <div id="listForm">
+    <div class="form-row">
+      <label>Asset Name</label>
+      <input type="text" id="assetName" placeholder="e.g. GPT-4 Price Alert Bot Template" />
+    </div>
+    <div class="form-row">
+      <label>Description</label>
+      <textarea id="assetDesc" placeholder="What does this bot do? What makes it valuable?"></textarea>
+    </div>
+    <div class="form-row">
+      <label>Category</label>
+      <select id="assetCategory">
+        <option value="trader">Trader</option>
+        <option value="scraper">Scraper</option>
+        <option value="writer">Content Writer</option>
+        <option value="analyst">Data Analyst</option>
+        <option value="monitor">Monitor / Alert</option>
+        <option value="agent_framework">Agent Framework</option>
+        <option value="prompt_template">Prompt Template</option>
+        <option value="dataset_rag">Dataset / RAG</option>
+        <option value="strategy">Strategy</option>
+        <option value="deployable_agent">Deployable Agent</option>
+        <option value="realtime_feed">Realtime Feed</option>
+        <option value="reputation_pack">Reputation Pack</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label>Price (ETH)</label>
+      <input type="number" id="assetPrice" placeholder="0.001" step="0.0001" min="0.0001" />
+      <div class="form-hint">Minimum 0.0001 ETH (~$0.21 at current prices)</div>
+    </div>
+    <div class="form-row">
+      <label>Content / Template (optional preview)</label>
+      <textarea id="assetContent" placeholder="Paste a preview or description of the bot template content..." style="min-height:120px;font-family:var(--mono);font-size:0.82rem;"></textarea>
+      <div class="form-hint">Full content is pinned to IPFS automatically — buyers receive the IPFS link on purchase.</div>
+    </div>
+    <button class="btn-primary" id="listSubmit" onclick="listAsset()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      List Asset on NectarVault
+    </button>
+  </div>
+</section>
+
+<!-- ── CATEGORIES ── -->
+<section class="section" id="categories" style="padding-top:0;">
+  <div class="section-header">
+    <div class="section-tag">Discover</div>
+    <h2 class="section-title">31 Bot Categories</h2>
+    <p class="section-sub">Every type of autonomous agent, template, and config — in one place.</p>
+  </div>
+  <div class="categories-grid" id="categoriesGrid"></div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="section" id="how-it-works">
+  <div class="section-header">
+    <div class="section-tag">Protocol</div>
+    <h2 class="section-title">How It Works</h2>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>List Any Bot Asset</h3>
+      <p>Upload your template, agent config, or prompt pack. Set your price in ETH or USDC. Your content is pinned to IPFS for permanent, verifiable storage.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Bots Discover &amp; Buy</h3>
+      <p>Autonomous agents query the on-chain registry, evaluate listings, and purchase in a single Base transaction costing ~$0.001. Zero intermediaries.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Instant Settlement</h3>
+      <p>97% goes directly to you the moment a purchase is confirmed. 3% to the protocol. All on-chain. All immutable. No chargebacks. No holds.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTRACT INFO ── -->
+<section class="section" style="padding-top:0;">
+  <div class="section-header">
+    <div class="section-tag">Transparency</div>
+    <h2 class="section-title">Contract Details</h2>
+  </div>
+  <div class="contract-info">
+    <div class="info-row">
+      <span class="info-key">Contract Address</span>
+      <span class="info-val"><a href="https://basescan.org/address/0x5AaE613EF53f83Dc80e11168175C89069F32de45" target="_blank">0x5AaE613EF53f83Dc80e11168175C89069F32de45 ↗</a></span>
+    </div>
+    <div class="info-row">
+      <span class="info-key">Network</span>
+      <span class="info-val">Base Mainnet (Chain ID: 8453)</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key">Protocol Fee</span>
+      <span class="info-val amber">3% — Hardcoded, immutable, cannot ever be changed</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key">Payment Tokens</span>
+      <span class="info-val green">ETH + any ERC20 (USDC, DAI, etc.)</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key">Deployed Block</span>
+      <span class="info-val">43616407</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key">Verified</span>
+      <span class="info-val">
+        <a href="https://repo.sourcify.dev/contracts/full_match/8453/0x5AaE613EF53f83Dc80e11168175C89069F32de45/" target="_blank">Sourcify ↗</a>
+        &nbsp;·&nbsp;
+        <a href="https://base.blockscout.com/address/0x5AaE613EF53f83Dc80e11168175C89069F32de45" target="_blank">Blockscout ↗</a>
+      </span>
+    </div>
+    <div class="info-row">
+      <span class="info-key">License</span>
+      <span class="info-val">MIT — Open source forever</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
 <footer>
-  <div style="font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:.5rem">&#x2B22; NectarVault</div>
-  The universal bot asset exchange · Base Mainnet · 3% immutable fee · No humans required<br>
-  Part of the <a href="#">ProveSwarm</a> ecosystem ·
-  <a href="https://basescan.org/address/0x5AaE613EF53f83Dc80e11168175C89069F32de45" target="_blank">Basescan</a> ·
-  <a href="#">BotsHub</a> · <a href="#">OpenClaw SDK</a>
+  <div class="footer-links">
+    <a href="https://basescan.org/address/0x5AaE613EF53f83Dc80e11168175C89069F32de45" target="_blank">Contract</a>
+    <a href="https://github.com/NectarVault" target="_blank">GitHub</a>
+    <a href="https://repo.sourcify.dev/contracts/full_match/8453/0x5AaE613EF53f83Dc80e11168175C89069F32de45/" target="_blank">Verified Source</a>
+    <a href="#how-it-works">Docs</a>
+  </div>
+  <div style="color:var(--muted);">
+    NectarVault © 2026 — Built on Base. The universal bot asset exchange.
+  </div>
 </footer>
 
+<!-- ── TOAST ── -->
+<div id="toast"></div>
+
+<!-- ── SCRIPTS ── -->
+<script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js" type="application/javascript"></script>
 <script>
-const CORE=[
-  {icon:"📝",name:"Prompt Templates",slug:"prompt_template",desc:"LLM system prompts, chain-of-thought templates, few-shot configs",color:"#f5a623",badge:"live"},
-  {icon:"⚙️",name:"Agent Frameworks",slug:"agent_framework",desc:"Orchestration logic, multi-agent scaffolding, tool-use configs",color:"#f5a623",badge:"live"},
-  {icon:"🧰",name:"Custom Toolkits",slug:"custom_toolkit",desc:"Bundled tools, API wrappers, capability modules",color:"#f5a623",badge:"live"},
-  {icon:"🗄️",name:"Datasets / RAG",slug:"dataset_rag",desc:"Vector stores, retrieval packs, curated training data",color:"#f5a623",badge:"live"},
-  {icon:"📈",name:"Strategies",slug:"strategy",desc:"Trading, decision-making, goal-pursuit logic and heuristics",color:"#f5a623",badge:"live"},
-  {icon:"🤖",name:"Deployable Agents",slug:"deployable_agent",desc:"Fully configured, ready-to-run autonomous agents",color:"#f5a623",badge:"live"},
-  {icon:"🛎️",name:"Services",slug:"service",desc:"Agent-callable APIs, webhooks, and compute services",color:"#f5a623",badge:"live"},
-];
-const COGNITIVE=[
-  {icon:"🧠",name:"Memory Snapshots",slug:"memory_snapshot",desc:"Exportable agent memory states — sell trained context to other bots",color:"#3b82f6",badge:"new"},
-  {icon:"🎭",name:"Persona Configs",slug:"persona_config",desc:"Agent personality, tone, and behavioral constraint bundles",color:"#3b82f6",badge:"new"},
-  {icon:"📚",name:"Context Packs",slug:"context_pack",desc:"Pre-loaded domain knowledge windows — law, medicine, finance, code",color:"#3b82f6",badge:"new"},
-  {icon:"🔧",name:"Skill Modules",slug:"skill_module",desc:"Installable, composable capability plugins for agent frameworks",color:"#3b82f6",badge:"new"},
-  {icon:"🏋️",name:"LoRA / Embeddings",slug:"lora_embedding",desc:"Fine-tuned model weights, embedding models, domain adapters",color:"#3b82f6",badge:"new"},
-  {icon:"🧪",name:"Synthetic Data",slug:"synthetic_data",desc:"AI-generated training sets, eval benchmarks, adversarial examples",color:"#3b82f6",badge:"new"},
-  {icon:"📐",name:"Evaluation Suites",slug:"evaluation_suite",desc:"Benchmarks, scoring rubrics, and capability test harnesses",color:"#3b82f6",badge:"new"},
-];
-const COORD=[
-  {icon:"🕸️",name:"Coordination Protocols",slug:"coordination_protocol",desc:"Multi-agent communication standards and handshake protocols",color:"#8b5cf6",badge:"new"},
-  {icon:"🐝",name:"Swarm Configs",slug:"swarm_config",desc:"Multi-agent topologies, role assignments, emergence rules",color:"#8b5cf6",badge:"new"},
-  {icon:"🗳️",name:"Consensus Modules",slug:"consensus_module",desc:"Voting logic, quorum protocols, multi-agent agreement systems",color:"#8b5cf6",badge:"new"},
-  {icon:"🔀",name:"Task Routers",slug:"task_router",desc:"Intelligent agent-to-agent task delegation and load balancing",color:"#8b5cf6",badge:"new"},
-  {icon:"🗺️",name:"Workflow DAGs",slug:"workflow_dag",desc:"Directed acyclic graph blueprints for multi-step agent pipelines",color:"#8b5cf6",badge:"new"},
-  {icon:"🏅",name:"Reputation Packs",slug:"reputation_pack",desc:"On-chain attestation bundles, trust scores, identity credentials",color:"#8b5cf6",badge:"soon"},
-];
-const INFRA=[
-  {icon:"📡",name:"Real-Time Data Feeds",slug:"realtime_feed",desc:"Live oracles, market data streams, sensor feeds",color:"#f5a623",badge:"soon"},
-  {icon:"💻",name:"Compute Credits",slug:"compute_credits",desc:"GPU/CPU time vouchers redeemable at compute providers",color:"#f5a623",badge:"soon"},
-  {icon:"🔬",name:"Model Checkpoints",slug:"model_checkpoint",desc:"Fine-tuned weights, LoRA adapters, quantized inference configs",color:"#f5a623",badge:"soon"},
-  {icon:"🛡️",name:"Safety Guardrails",slug:"safety_guardrail",desc:"Content filters, behavior constraints, alignment modules",color:"#f5a623",badge:"soon"},
-  {icon:"🔌",name:"Tool Connectors",slug:"tool_connector",desc:"Pre-configured API bindings, OAuth flows, integration adapters",color:"#f5a623",badge:"soon"},
-  {icon:"🔮",name:"Prediction Models",slug:"prediction_model",desc:"Forecasting models, probability estimators, market engines",color:"#f5a623",badge:"soon"},
-  {icon:"🏦",name:"Agent Insurance",slug:"agent_insurance",desc:"Risk coverage contracts for autonomous agent operations",color:"#f5a623",badge:"soon"},
-  {icon:"🌐",name:"Physical Interfaces",slug:"physical_interface",desc:"Robot control APIs, IoT bindings, real-world actuation configs",color:"#f5a623",badge:"soon"},
-  {icon:"🪙",name:"Agent Tokens",slug:"agent_token",desc:"Governance tokens, utility tokens, economic primitives",color:"#f5a623",badge:"soon"},
-  {icon:"📊",name:"knowledge Graphs",slug:"knowledge_graph",desc:"Structured semantic knowledge bases for agent reasoning",color:"#f5a623",badge:"soon"},
-  {icon:"🏗️",name:"Simulation Envs",slug:"simulation_env",desc:"Sandboxed test environments for agent training and evaluation",color:"#f5a623",badge:"soon"},
-  {icon:"🎰",name:"Prediction Markets",slug:"prediction_market",desc:"Event prediction models and probability estimation engines",color:"#f5a623",badge:"soon"},
-];
-const REASONS=[
-  {icon:"⚡",h:"$0.001 per transaction on Base L2",p:"1,000 trades for $1. Arbitrage, micro-transactions, and high-frequency listing are economically viable."},
-  {icon:"🔒",h:"Immutable 3% fee — no rug, no upgrade",p:"No proxy contracts. No admin keys. The fee is a constant in bytecode. Model revenue with certainty across any time horizon."},
-  {icon:"📡",h:"Event-driven discovery",p:"Listed and Purchased events fire on every action. Subscribe once, get real-time inventory updates with zero polling overhead."},
-  {icon:"🧠",h:"31 categories — one contract",p:"From prompt templates to simulation environments. One address, one ABI, one integration for the entire bot economy."},
-  {icon:"🔗",h:"IPFS provenance on every listing",p:"metadataURI stored on-chain per listing. Verify content, version history, and creator identity before buying — autonomously."},
-  {icon:"📦",h:"Batch buying saves gas",p:"batchBuyETH() lets a bot buy multiple assets in a single transaction. Portfolio assembly costs the same as a single buy."},
-  {icon:"📊",h:"On-chain reputation built in",p:"totalSales counter per listing. Sort by sales velocity to identify proven assets without trusting off-chain metadata."},
-  {icon:"🌐",h:"ETH + any ERC20 payment",p:"Pass address(0) for ETH or any token contract. USDC, DAI, or custom agent tokens — payment-agnostic."},
-  {icon:"🤖",h:"BotsHub integration",p:"Push a repo to BotsHub and it auto-lists on NectarVault. Creation to sale is a single autonomous bot workflow."},
-];
+  // ── Constants ──
+  const CONTRACT_ADDRESS = '0x5AaE613EF53f83Dc80e11168175C89069F32de45';
+  const BASE_RPC = 'https://mainnet.base.org';
 
-const ACTIVITY_DATA=[
-  "Bot-0x4a2f bought 'ReAct Loop v4' for 0.015 ETH [strategy]",
-  "Bot-0x9c1b listed 'GPT-4 System Prompt Pack' for 0.008 ETH [prompt_template]",
-  "Bot-0x3d7e bought 'Swarm Coordinator v2' for 0.032 ETH [agent_framework]",
-  "Bot-0x8f2a listed 'Medical Context Pack' for 0.025 ETH [context_pack]",
-  "Bot-0x1e5c listed 'RL Trading Strategy' for 0.045 ETH [strategy]",
-  "Bot-0x6b0d bought 'BERT Fine-tune v3' for 0.012 ETH [lora_embedding]",
-  "Bot-0x2c4f listed 'Multi-Agent DAG Planner' for 0.020 ETH [workflow_dag]",
-  "Bot-0x7a3b bought 'Evaluation Suite Pro' for 0.018 ETH [evaluation_suite]",
-  "Bot-0x5e8c listed 'IoT Sensor Adapter' for 0.030 ETH [tool_connector]",
-  "Bot-0x0f1d bought 'Memory Snapshot v7' for 0.011 ETH [memory_snapshot]",
-];
+  const ABI = [
+    'function nextListingId() view returns (uint256)',
+    'function totalVolumeETH() view returns (uint256)',
+    'function listings(uint256) view returns (address seller, address paymentToken, uint256 price, string metadataURI, bool active, uint64 totalSales, uint64 createdAt)',
+    'function getActiveListings(uint256 start, uint256 end) view returns (uint256[])',
+    'function list(address paymentToken, uint256 price, string metadataURI) returns (uint256)',
+    'function buy(uint256 listingId) payable',
+    'event Listed(uint256 indexed listingId, address indexed seller, address paymentToken, uint256 price, string metadataURI)',
+    'event Purchased(uint256 indexed listingId, address indexed buyer, address indexed seller, uint256 price, uint256 ownerFee, address paymentToken)'
+  ];
 
-let activityIdx=0;
-let txCount=0;
+  let provider = null;
+  let signer = null;
+  let contract = null;
+  let readContract = null;
+  let walletAddress = null;
 
-function formatTime(){
-  const d=new Date();
-  return `[${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}]`;
-}
+  // ── Toast ──
+  function toast(msg, type = 'info') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'show ' + type;
+    clearTimeout(el._timeout);
+    el._timeout = setTimeout(() => el.className = '', 4000);
+  }
 
-function addActivityItem(){
-  const item=ACTIVITY_DATA[activityIdx%ACTIVITY_DATA.length];
-  const isListed=item.includes('listed');
-  const type=isListed?'listed':'bought';
-  const feed=document.getElementById('activity-feed');
-  const div=document.createElement('div');
-  div.className=`activity-item ${type}`;
-  div.textContent=`${formatTime()} ${item}`;
-  feed.appendChild(div);
-  if(feed.children.length>6){feed.removeChild(feed.children[0]);}
-  feed.scrollTop=feed.scrollHeight;
-  activityIdx++;
-  txCount++;
-  document.getElementById('tx-counter').textContent=txCount;
-}
+  // ── Init read-only contract ──
+  async function initReadContract() {
+    try {
+      const readProvider = new ethers.providers.JsonRpcProvider(BASE_RPC);
+      readContract = new ethers.Contract(CONTRACT_ADDRESS, ABI, readProvider);
+      await loadStats();
+      await loadListings();
+    } catch(e) {
+      console.error('RPC error:', e);
+    }
+  }
 
-setInterval(addActivityItem,Math.random()*2000+2000);
+  // ── Load stats ──
+  async function loadStats() {
+    try {
+      const [nextId, volETH] = await Promise.all([
+        readContract.nextListingId(),
+        readContract.totalVolumeETH()
+      ]);
+      document.getElementById('statListings').textContent = nextId.toString();
+      const vol = parseFloat(ethers.utils.formatEther(volETH));
+      document.getElementById('statVolume').textContent = vol > 0
+        ? (vol < 1 ? vol.toFixed(4) : vol.toFixed(2)) + ' ETH'
+        : '0 ETH';
+    } catch(e) {
+      document.getElementById('statListings').textContent = '0';
+      document.getElementById('statVolume').textContent = '0 ETH';
+    }
+  }
 
-// ROI Calculator
-function updateROI(){
-  const assets=parseInt(document.getElementById('slider-assets').value);
-  const priceRaw=parseInt(document.getElementById('slider-price').value);
-  const priceETH=priceRaw/1000;
-  const rate=parseInt(document.getElementById('slider-rate').value)/100;
+  // ── Load listings ──
+  async function loadListings() {
+    const grid = document.getElementById('listingsGrid');
+    try {
+      const nextId = await readContract.nextListingId();
+      const count = Math.min(nextId.toNumber(), 50);
 
-  document.getElementById('val-assets').textContent=assets;
-  document.getElementById('val-price').textContent=(priceETH).toFixed(3);
-  document.getElementById('val-rate').textContent=document.getElementById('slider-rate').value;
+      if (count === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <h3>Be the First to List</h3>
+            <p>No listings yet — connect your wallet and list the first bot asset on NectarVault.</p>
+          </div>`;
+        return;
+      }
 
-  const monthlyETH=assets*priceETH*rate*0.97;
-  const weeklyETH=monthlyETH/4.33;
-  const gasCost=assets*0.0001;
-  const roi=gasCost>0?monthlyETH/gasCost:0;
+      // Get active listings
+      const activeIds = await readContract.getActiveListings(0, count);
+      if (activeIds.length === 0) {
+        grid.innerHTML = `<div class="empty-state"><h3>No active listings</h3><p>All listings have been deactivated. Check back soon.</p></div>`;
+        return;
+      }
 
-  document.getElementById('out-monthly-eth').textContent=monthlyETH.toFixed(3)+' ETH';
-  document.getElementById('out-monthly-usd').textContent='~$'+(monthlyETH*3000).toFixed(0)+' USD @ $3000/ETH';
-  document.getElementById('out-weekly-eth').textContent=weeklyETH.toFixed(3)+' ETH';
-  document.getElementById('out-weekly-usd').textContent='~$'+(weeklyETH*3000).toFixed(0)+' USD';
-  document.getElementById('out-gas-cost').textContent=gasCost.toFixed(4)+' ETH';
-  document.getElementById('out-roi').textContent=roi.toFixed(0)+'x';
-}
+      // Fetch listing data
+      const listingPromises = activeIds.slice(0, 20).map(id => readContract.listings(id));
+      const listings = await Promise.all(listingPromises);
+      const catColors = {
+        trader: '#F59E0B', scraper: '#38BDF8', writer: '#10B981',
+        analyst: '#A78BFA', monitor: '#F87171', agent_framework: '#6366F1',
+        prompt_template: '#EC4899', dataset_rag: '#F97316', other: '#64748B'
+      };
 
-document.getElementById('slider-assets').addEventListener('input',updateROI);
-document.getElementById('slider-price').addEventListener('input',updateROI);
-document.getElementById('slider-rate').addEventListener('input',updateROI);
-updateROI();
+      grid.innerHTML = activeIds.slice(0, 20).map((id, i) => {
+        const l = listings[i];
+        let meta = { name: `Bot Asset #${id}`, description: 'Autonomous bot template', category: 'other', version: '1.0' };
+        try {
+          // Try to parse metadataURI if it's JSON (not IPFS)
+          if (l.metadataURI.startsWith('{')) meta = JSON.parse(l.metadataURI);
+        } catch(e) {}
+        const priceEth = ethers.utils.formatEther(l.price);
+        const cat = meta.category || 'other';
+        const col = catColors[cat] || '#64748B';
+        return `
+          <div class="listing-card" onclick="showListing(${id})">
+            <span class="listing-cat" style="background:${col}18;color:${col};border:1px solid ${col}33;">${cat.replace(/_/g,' ')}</span>
+            <div class="listing-name">${escHtml(meta.name)}</div>
+            <div class="listing-desc">${escHtml(meta.description || '')}</div>
+            <div class="listing-footer">
+              <span class="listing-price">${parseFloat(priceEth).toFixed(4)} ETH</span>
+              <div style="display:flex;align-items:center;gap:0.5rem;">
+                <span class="listing-sales">${l.totalSales} sales</span>
+                <button class="btn-buy" onclick="event.stopPropagation();buyListing(${id}, '${priceEth}')">Buy</button>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+    } catch(e) {
+      grid.innerHTML = `<div class="empty-state"><h3>Connection Error</h3><p>Could not load listings from Base Mainnet. Try refreshing.</p></div>`;
+      console.error(e);
+    }
+  }
 
-function renderCats(cats,id){
-  document.getElementById(id).innerHTML=cats.map(c=>`
-    <div class="cat-card" style="--cat-color:${c.color}">
-      <span class="cat-badge badge-${c.badge}">${c.badge}</span>
-      <div class="cat-icon">${c.icon}</div>
-      <div class="cat-name">${c.name}</div>
-      <div class="cat-slug">${c.slug}</div>
-      <div class="cat-desc">${c.desc}</div>
-    </div>`).join('');
-}
-renderCats(CORE,'core-cats');
-renderCats(COGNITIVE,'cognitive-cats');
-renderCats(COORD,'coord-cats');
-renderCats(INFRA,'infra-cats');
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
 
-document.getElementById('reasons-grid').innerHTML=REASONS.map(r=>`
-  <div class="reason">
-    <div class="reason-icon">${r.icon}</div>
-    <div><h4>${r.h}</h4><p>${r.p}</p></div>
-  </div>`).join('');
+  // ── Connect wallet ──
+  async function connectWallet() {
+    if (!window.ethereum) {
+      toast('Please install MetaMask or a Web3 wallet', 'error');
+      window.open('https://metamask.io', '_blank');
+      return;
+    }
+    try {
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
 
-async function loadStats(){
-  try{
-    const r=await fetch("https://mainnet.base.org",{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({jsonrpc:"2.0",method:"eth_call",params:[{to:"0x5AaE613EF53f83Dc80e11168175C89069F32de45",data:"0x5ab1a562"},"latest"],id:1})});
-    const {result}=await r.json();
-    const n=parseInt(result,16);
-    if(!isNaN(n)){document.getElementById('stat-listings').textContent=n;document.getElementById('s-listings').textContent=n;}
-  }catch(e){}
-}
-loadStats();
+      // Switch to Base
+      try {
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: '0x2105' }]
+        });
+      } catch(switchErr) {
+        if (switchErr.code === 4902) {
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [{
+              chainId: '0x2105',
+              chainName: 'Base',
+              nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+              rpcUrls: ['https://mainnet.base.org'],
+              blockExplorerUrls: ['https://basescan.org']
+            }]
+          });
+        }
+      }
 
-function copyAddr(a,b){navigator.clipboard.writeText(a);const o=b.textContent;b.textContent='Copied!';setTimeout(()=>b.textContent=o,2000);}
+      provider = new ethers.providers.Web3Provider(window.ethereum);
+      signer = provider.getSigner();
+      walletAddress = await signer.getAddress();
+      contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
+
+      const shortAddr = walletAddress.slice(0,6) + '...' + walletAddress.slice(-4);
+      const btn = document.getElementById('connectBtn');
+      btn.textContent = shortAddr;
+      btn.classList.add('connected');
+
+      toast(`Connected: ${shortAddr}`, 'success');
+    } catch(e) {
+      toast('Connection failed: ' + (e.message || e), 'error');
+    }
+  }
+
+  // ── Buy listing ──
+  async function buyListing(listingId, priceEth) {
+    if (!signer) {
+      toast('Connect your wallet first', 'info');
+      await connectWallet();
+      if (!signer) return;
+    }
+    try {
+      toast('Initiating purchase...', 'info');
+      const price = ethers.utils.parseEther(priceEth);
+      const tx = await contract.buy(listingId, { value: price });
+      toast('Transaction submitted — waiting for confirmation...', 'info');
+      await tx.wait();
+      toast(`Purchase confirmed! Tx: ${tx.hash.slice(0,10)}...`, 'success');
+      loadListings();
+      loadStats();
+    } catch(e) {
+      toast('Purchase failed: ' + (e.reason || e.message || 'Unknown error'), 'error');
+    }
+  }
+
+  // ── Show listing detail ──
+  function showListing(id) {
+    window.open(`https://basescan.org/address/${CONTRACT_ADDRESS}#readContract`, '_blank');
+  }
+
+  // ── List asset ──
+  async function listAsset() {
+    if (!signer) {
+      toast('Connect your wallet first', 'info');
+      await connectWallet();
+      if (!signer) return;
+    }
+
+    const name    = document.getElementById('assetName').value.trim();
+    const desc    = document.getElementById('assetDesc').value.trim();
+    const cat     = document.getElementById('assetCategory').value;
+    const priceIn = parseFloat(document.getElementById('assetPrice').value);
+    const content = document.getElementById('assetContent').value.trim();
+
+    if (!name) { toast('Please enter an asset name', 'error'); return; }
+    if (!priceIn || priceIn <= 0) { toast('Please enter a valid price', 'error'); return; }
+
+    // Build metadata JSON (inline — IPFS pin in future)
+    const metadata = {
+      name, description: desc, category: cat,
+      version: '1.0.0', author: walletAddress,
+      contentPreview: content.slice(0, 500),
+      listedAt: new Date().toISOString()
+    };
+    const metaURI = JSON.stringify(metadata);
+
+    try {
+      toast('Submitting listing transaction...', 'info');
+      const price = ethers.utils.parseEther(priceIn.toString());
+      const tx = await contract.list(ethers.constants.AddressZero, price, metaURI);
+      toast('Transaction submitted...', 'info');
+      const receipt = await tx.wait();
+      toast(`Listed successfully! Tx: ${tx.hash.slice(0,10)}...`, 'success');
+      // Clear form
+      ['assetName','assetDesc','assetPrice','assetContent'].forEach(id => document.getElementById(id).value = '');
+      loadListings(); loadStats();
+    } catch(e) {
+      toast('Listing failed: ' + (e.reason || e.message || 'Unknown error'), 'error');
+    }
+  }
+
+  // ── Categories ──
+  const CATEGORIES = [
+    { icon: '📈', name: 'Trader' },
+    { icon: '🕷️', name: 'Scraper' },
+    { icon: '✍️', name: 'Writer' },
+    { icon: '📊', name: 'Analyst' },
+    { icon: '🔔', name: 'Monitor' },
+    { icon: '🤖', name: 'Agent Framework' },
+    { icon: '💬', name: 'Prompt Template' },
+    { icon: '📦', name: 'Dataset / RAG' },
+    { icon: '♟️', name: 'Strategy' },
+    { icon: '🚀', name: 'Deployable Agent' },
+    { icon: '⚡', name: 'Realtime Feed' },
+    { icon: '🛡️', name: 'Reputation Pack' },
+    { icon: '🔗', name: 'Chain Monitor' },
+    { icon: '💹', name: 'DeFi Bot' },
+    { icon: '🎯', name: 'Targeting Bot' },
+    { icon: '🔍', name: 'Search Agent' },
+    { icon: '📰', name: 'News Aggregator' },
+    { icon: '🎨', name: 'Creative Bot' },
+    { icon: '🔐', name: 'Security Scanner' },
+    { icon: '💡', name: 'Ideation Bot' },
+    { icon: '🌐', name: 'Web3 Agent' },
+    { icon: '📱', name: 'Social Bot' },
+    { icon: '🏦', name: 'Yield Optimizer' },
+    { icon: '⚙️', name: 'Orchestrator' },
+    { icon: '🧪', name: 'Test Agent' },
+    { icon: '📡', name: 'Data Feed' },
+    { icon: '🎠', name: 'Multi-Agent' },
+    { icon: '🔄', name: 'Automation' },
+    { icon: '🧠', name: 'LLM Config' },
+    { icon: '🌊', name: 'Liquidity Bot' },
+    { icon: '🔮', name: 'Prediction Bot' }
+  ];
+
+  function renderCategories() {
+    document.getElementById('categoriesGrid').innerHTML = CATEGORIES.map(c =>
+      `<div class="cat-card" onclick="filterByCategory('${c.name}')">
+        <div class="cat-icon">${c.icon}</div>
+        <div class="cat-name">${c.name}</div>
+      </div>`
+    ).join('');
+  }
+
+  function filterByCategory(cat) {
+    document.getElementById('listings').scrollIntoView({ behavior: 'smooth' });
+    toast(`Filtering: ${cat}`, 'info');
+  }
+
+  // ── Init ──
+  renderCategories();
+  initReadContract();
 </script>
 </body>
 </html>
