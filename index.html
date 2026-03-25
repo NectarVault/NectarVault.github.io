@@ -14,7 +14,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --amber: #F59E0B;
+  --amber: #F59E0B;h
   --amber-dark: #D97706;
   --amber-glow: rgba(245,158,11,0.15);
   --navy: #0A0F1E;
@@ -1027,7 +1027,7 @@ async function loadStats() {
     document.getElementById('statListings').textContent = total;
     document.getElementById('statVolume').textContent   = vol + ' ETH';
     document.getElementById('statActive').textContent   = activeCount;
-    document.getElementById('statBots').textContent     = botRegistry.length;
+    readContract.getListingsBatch(Array.from({length:Math.min(total,500)},(_,i)=>i)).then(ls=>{document.getElementById('statBots').textContent=new Set(ls.map(l=>l.seller.toLowerCase())).size}).catch(()=>document.getElementById('statBots').textContent=botRegistry.length);
     ['t-listings','t-listings2'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=total; });
     ['t-volume','t-volume2'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=vol+' ETH'; });
   } catch(e) { console.warn('Stats:', e.message); }
